@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Тренеры{% endblock %}
+{% block content %}
+<section class="py-5 bg-dark text-light"><div class="container text-center"><h1 class="display-4 fw-bold">Наши тренеры</h1><p class="lead mt-3">Команда фитнес-клуба</p></div></section>
+<section class="py-5"><div class="container"><div class="row g-4">{% for trainer in trainers %}<div class="col-lg-3 col-md-6"><div class="card border-0 shadow-sm text-center h-100 overflow-hidden card-hover">{% if trainer.photo %}<img src="{{ trainer.photo.url }}" class="card-img-top" style="height:300px; object-fit:cover;" alt="{{ trainer.full_name }}">{% else %}<div class="trainer-placeholder">Тренер</div>{% endif %}<div class="card-body p-4"><h5 class="fw-bold">{{ trainer.full_name }}</h5><p class="text-muted mb-2">{{ trainer.specialization }}</p><p>Опыт: {{ trainer.experience }} лет</p><a href="{% url 'trainer_detail' trainer.id %}" class="btn btn-dark w-100 rounded-pill">Профиль</a></div></div></div>{% empty %}<p class="text-center text-muted">Тренеры пока не добавлены.</p>{% endfor %}</div></div></section>
+{% endblock %}

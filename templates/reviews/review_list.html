@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Отзывы{% endblock %}
+{% block content %}
+<section class="py-5 bg-dark text-light"><div class="container text-center"><h1 class="display-4 fw-bold">Отзывы</h1><p class="lead">Мнения клиентов фитнес-клуба</p></div></section>
+<section class="py-5"><div class="container"><div class="row g-4"><div class="col-lg-7">{% for review in reviews %}<div class="card border-0 shadow-sm rounded-4 p-4 mb-3"><div class="d-flex justify-content-between"><h5 class="fw-bold">{{ review.author_name }}</h5><span class="badge bg-warning text-dark">{{ review.rating }}/5</span></div><p class="mb-0 text-muted">{{ review.text }}</p></div>{% empty %}<p class="text-muted">Отзывы пока не добавлены.</p>{% endfor %}</div><div class="col-lg-5"><div class="card border-0 shadow rounded-4 p-4"><h3 class="fw-bold mb-3">Оставить отзыв</h3><form method="post">{% csrf_token %}<div class="mb-3">{{ form.author_name }}</div><div class="mb-3">{{ form.rating }}</div><div class="mb-3">{{ form.text }}</div><button class="btn btn-dark rounded-pill w-100" type="submit">Отправить</button></form></div></div></div></div></section>
+{% endblock %}

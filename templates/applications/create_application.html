@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Заявка на абонемент{% endblock %}
+{% block content %}
+<section class="py-5 bg-light"><div class="container"><div class="row justify-content-center"><div class="col-md-5"><div class="card border-0 shadow rounded-4"><div class="card-body p-4"><h2 class="text-center fw-bold mb-4">Заявка на абонемент</h2><h5 class="text-center mb-4">{{ membership.name }}</h5><form method="post">{% csrf_token %}<div class="mb-3">{{ form.client_name }}</div><div class="mb-3">{{ form.phone_number }}</div><div class="mb-4">{{ form.payment_type }}</div><button type="submit" class="btn btn-dark w-100 rounded-pill">Отправить заявку</button></form></div></div></div></div></div></section>
+{% endblock %}

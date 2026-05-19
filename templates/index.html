@@ -1,0 +1,348 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<section class="hero-section text-light py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h1 class="display-3 fw-bold mb-4">Фитнес-клуб для силы, здоровья и уверенности</h1>
+                <p class="lead mb-4">Абонементы, групповые программы, персональные тренировки и удобное расписание в одном месте.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'membership_list' %}" class="btn btn-warning btn-lg rounded-pill px-4">Смотреть абонементы</a>
+                    <a href="{% url 'contacts' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Связаться</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1200&auto=format&fit=crop" class="img-fluid rounded-4 shadow-lg" alt="Фитнес-клуб">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Популярные абонементы</h2>
+            <p class="text-muted">Выберите удобный формат тренировок</p>
+        </div>
+        <div class="row g-4">
+            {% for membership in memberships %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 rounded-4 card-hover text-dark"
+                     style="overflow:hidden;
+                     background: {% if forloop.counter == 1 %}linear-gradient(135deg, #6ab1fc, #d9f0ff)
+                                 {% elif forloop.counter == 2 %}linear-gradient(135deg, #ff9ade, #ffc6f0)
+                                 {% elif forloop.counter == 3 %}linear-gradient(135deg, #f0f0f0, #d9d9d9)
+                                 {% elif forloop.counter == 4 %}linear-gradient(135deg, #b9f0b1, #ddffd9)
+                                 {% else %}linear-gradient(135deg, #ffc9b1, #ffe5d9){% endif %};">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="mb-2">
+                            <span class="badge bg-dark text-white">{{ membership.duration_days }} дней</span>
+                        </div>
+                        <h4 class="fw-bold mb-3">{{ membership.name }}</h4>
+                        <p class="text-muted mb-4">{{ membership.description|truncatewords:20 }}</p>
+                        <div class="mt-auto">
+                            <strong class="fs-5 d-block mb-3">{{ membership.price }} ₽</strong>
+                            <a href="{% url 'membership_detail' membership.slug %}"
+                               class="btn w-100 rounded-pill fw-bold"
+                               style="color:#fff; background-color: {% if forloop.counter == 1 %}#007bff
+                                                                    {% elif forloop.counter == 2 %}#e83e8c
+                                                                    {% elif forloop.counter == 3 %}#343a40
+                                                                    {% elif forloop.counter == 4 %}#28a745
+                                                                    {% else %}#fd7e14{% endif %};">
+                                Узнать цену
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.card-hover {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+}
+.card-hover:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 1rem 1.5rem rgba(0,0,0,0.2);
+}
+</style>
+
+<section class="trainers-section bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="section-label">Команда клуба</span>
+            <h2 class="display-5 fw-bold mt-2">Наши тренеры</h2>
+            <p class="text-muted mb-0">
+                Специалисты по силовым, функциональным и групповым тренировкам
+            </p>
+        </div>
+
+        <div class="row g-4">
+            {% for trainer in trainers %}
+            <div class="col-lg-3 col-md-6">
+                <div class="trainer-card card border-0 shadow-sm h-100 overflow-hidden">
+
+                    <div class="trainer-photo-wrap">
+                        {% if trainer.photo %}
+                        <img src="{{ trainer.photo.url }}"
+                             class="trainer-photo"
+                             alt="{{ trainer.full_name }}">
+                        {% else %}
+                        <div class="trainer-placeholder">
+                            <div class="trainer-placeholder-icon">🏋️</div>
+                            <span>Тренер</span>
+                        </div>
+                        {% endif %}
+
+                        <div class="trainer-top-badge">
+                            Опыт {{ trainer.experience }} лет
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h5 class="fw-bold mb-1">{{ trainer.full_name }}</h5>
+                        <p class="trainer-specialization mb-3">
+                            {{ trainer.specialization }}
+                        </p>
+
+                        <div class="trainer-info-box mb-4">
+                            <span>Персональные тренировки</span>
+                            <strong>Fitness Club</strong>
+                        </div>
+
+                        <a href="{% url 'trainer_detail' trainer.id %}"
+                           class="btn trainer-btn w-100 rounded-pill mt-auto">
+                            Смотреть профиль
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-box text-center">
+                    <h5 class="fw-bold mb-2">Тренеры пока не добавлены</h5>
+                    <p class="text-muted mb-0">
+                        Добавьте тренеров через админ-панель Django.
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.trainers-section {
+    position: relative;
+}
+
+.section-label {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 50px;
+    background: #111;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.trainer-card {
+    border-radius: 28px;
+    background: #fff;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.trainer-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.16) !important;
+}
+
+.trainer-photo-wrap {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #e8edf5, #f8f9fb);
+}
+
+.trainer-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.trainer-card:hover .trainer-photo {
+    transform: scale(1.07);
+}
+
+.trainer-photo-wrap::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 45%;
+    background: linear-gradient(to top, rgba(0,0,0,0.45), transparent);
+}
+
+.trainer-top-badge {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 2;
+    padding: 8px 14px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111;
+    font-size: 13px;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+}
+
+.trainer-placeholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #111827, #374151);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.trainer-placeholder-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    font-size: 34px;
+}
+
+.trainer-specialization {
+    color: #6c757d;
+    font-size: 15px;
+    min-height: 44px;
+}
+
+.trainer-info-box {
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.trainer-info-box span {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.trainer-info-box strong {
+    color: #111;
+    font-size: 15px;
+}
+
+.trainer-btn {
+    padding: 11px 18px;
+    background: #111;
+    color: #fff;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.trainer-btn:hover {
+    background: #0d6efd;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.empty-box {
+    padding: 50px 25px;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+</style>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <div class="col-lg-6">
+                <div class="p-5 rounded-4 bg-dark text-light h-100">
+                    <h2 class="fw-bold mb-4">Акции клуба</h2>
+                    {% for stock in stocks %}
+                    <div class="mb-3 p-3 rounded-4 bg-gradient-warning text-dark stock-card shadow-sm transition-hover">
+                        <strong>{{ stock.title }}</strong>
+                        <p class="mb-0 opacity-75">Скидка {{ stock.discount_percent }}% до {{ stock.end_date }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="opacity-75">Акции пока не добавлены.</p>
+                    {% endfor %}
+                    <a href="{% url 'stock_list' %}" class="btn btn-warning rounded-pill px-4 mt-3 fw-bold">
+                        Все акции
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="p-5 rounded-4 bg-light h-100">
+                    <h2 class="fw-bold mb-4">Отзывы клиентов</h2>
+                    {% for review in reviews %}
+                    <blockquote class="border-start border-4 ps-3 mb-3 review-card shadow-sm">
+                        <p class="mb-1">{{ review.text|truncatewords:25 }}</p>
+                        <footer class="text-muted">{{ review.author_name }} — {{ review.rating }}/5</footer>
+                    </blockquote>
+                    {% empty %}
+                    <p class="text-muted">Отзывы пока не добавлены.</p>
+                    {% endfor %}
+                    <a href="{% url 'review_list' %}" class="btn btn-dark rounded-pill px-4 mt-3 fw-bold">
+                        Оставить отзыв
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+
+.stock-card {
+    background: linear-gradient(135deg, #fff3cd, #ffe8a1);
+    border-radius: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.stock-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.15);
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.25rem rgba(0,0,0,0.1);
+}
+
+.transition-hover {
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

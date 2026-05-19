@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Типы тренировок{% endblock %}
+{% block content %}
+<section class="py-5 bg-dark text-light"><div class="container text-center"><h1 class="display-4 fw-bold">Типы тренировок</h1><p class="lead">Групповые, персональные и функциональные программы</p></div></section>
+<section class="py-5"><div class="container"><div class="row g-4">{% for item in training_types %}<div class="col-lg-4 col-md-6"><div class="card border-0 shadow h-100 p-4"><h3 class="fw-bold">{{ item.name }}</h3><p class="text-muted mb-0">{{ item.description|default:'Описание можно добавить в админ-панели.' }}</p></div></div>{% empty %}<p class="text-center text-muted">Типы тренировок пока не добавлены.</p>{% endfor %}</div></div></section>
+{% endblock %}

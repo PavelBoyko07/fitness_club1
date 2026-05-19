@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}{{ trainer.full_name }}{% endblock %}
+{% block content %}
+<section class="py-5"><div class="container"><div class="row g-5 align-items-center"><div class="col-lg-5">{% if trainer.photo %}<img src="{{ trainer.photo.url }}" class="img-fluid rounded-4 shadow" alt="{{ trainer.full_name }}">{% else %}<div class="trainer-placeholder rounded-4" style="height:450px;">Тренер</div>{% endif %}</div><div class="col-lg-7"><h1 class="display-5 fw-bold">{{ trainer.full_name }}</h1><p class="lead text-muted">{{ trainer.specialization }}</p><p><strong>Опыт:</strong> {{ trainer.experience }} лет</p><p>{{ trainer.description|default:'Описание тренера можно добавить в админ-панели.' }}</p><h3 class="fw-bold mt-4">Ведёт абонементы</h3><ul class="list-group list-group-flush">{% for membership in memberships %}<li class="list-group-item"><a href="{% url 'membership_detail' membership.slug %}">{{ membership.name }}</a></li>{% empty %}<li class="list-group-item text-muted">Абонементы не указаны.</li>{% endfor %}</ul></div></div></div></section>
+{% endblock %}

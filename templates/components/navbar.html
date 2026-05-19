@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" href="{% url 'home' %}">Fitness Club</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'membership_list' %}">Абонементы</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'trainer_list' %}">Тренеры</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'training_type_list' %}">Тренировки</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'schedule_type_list' %}">Расписание</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'stock_list' %}">Акции</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'review_list' %}">Отзывы</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'application_list' %}">Мои заявки</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
+                <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                    {% if user.is_authenticated %}
+                    <div class="d-flex gap-2 align-items-center">
+                        <span class="text-light small">{{ user.username }}</span>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light rounded-pill px-4">Выйти</button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'login' %}" class="btn btn-outline-light rounded-pill px-4">Вход</a>
+                        <a href="{% url 'register' %}" class="btn btn-warning rounded-pill px-4">Регистрация</a>
+                    </div>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

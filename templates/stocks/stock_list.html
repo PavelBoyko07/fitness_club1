@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Акции{% endblock %}
+{% block content %}
+<section class="py-5 bg-dark text-light"><div class="container text-center"><h1 class="display-4 fw-bold">Акции</h1><p class="lead">Специальные предложения фитнес-клуба</p></div></section>
+<section class="py-5"><div class="container"><div class="row g-4">{% for stock in stocks %}<div class="col-lg-4 col-md-6"><div class="card border-0 shadow h-100 p-4"><span class="badge bg-warning text-dark rounded-pill mb-3 align-self-start">-{{ stock.discount_percent }}%</span><h3 class="fw-bold">{{ stock.title }}</h3><p class="text-muted">{{ stock.description }}</p><p class="mb-0"><strong>Срок:</strong> {{ stock.start_date }} — {{ stock.end_date }}</p></div></div>{% empty %}<p class="text-center text-muted">Акции пока не добавлены.</p>{% endfor %}</div></div></section>
+{% endblock %}

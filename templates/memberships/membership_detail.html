@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}{{ membership.name }}{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-dark text-light text-center">
+    <h1 class="display-4 fw-bold">{{ membership.name }}</h1>
+    <p class="lead mt-3">Абонемент фитнес-клуба</p>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="placeholder-img rounded-4 d-flex align-items-center justify-content-center"
+                     style="height:500px; background: linear-gradient(135deg, #f5f7fa, #e0eafc); font-size:2rem; font-weight:bold;">
+                    FITNESS
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg rounded-4 p-5">
+                    <div class="mb-3">
+                        <span class="badge bg-dark px-3 py-2">{{ membership.direction.name }}</span>
+                        {% if membership.training_type %}
+                        <span class="badge bg-warning text-dark px-3 py-2">{{ membership.training_type.name }}</span>
+                        {% endif %}
+                    </div>
+
+                    <h2 class="fw-bold mb-4">Описание</h2>
+                    <p class="text-muted fs-5">{{ membership.description }}</p>
+
+                    <hr class="my-4">
+
+                    <div class="row text-center mb-4 g-3">
+                        <div class="col-4">
+                            <div class="bg-gradient rounded-4 p-3 shadow-sm">
+                                <h6 class="fw-bold">Цена</h6>
+                                <p class="mb-0 text-dark">{{ membership.price }} ₽</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-gradient rounded-4 p-3 shadow-sm">
+                                <h6 class="fw-bold">Срок</h6>
+                                <p class="mb-0 text-dark">{{ membership.duration_days }} дней</p>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="bg-gradient rounded-4 p-3 shadow-sm">
+                                <h6 class="fw-bold">Визиты</h6>
+                                <p class="mb-0 text-dark">{{ membership.visits_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mb-3">Тренеры</h4>
+                    <ul class="list-group list-group-flush mb-4">
+                        {% for trainer in trainers %}
+                        <li class="list-group-item py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">{{ trainer.full_name }}</h6>
+                                    <small class="text-muted">{{ trainer.specialization }}</small>
+                                </div>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">Тренеры не указаны.</li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'create_application' membership.id %}" class="btn btn-warning btn-lg rounded-pill w-100 fw-bold">Оформить заявку</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-dark btn-lg rounded-pill w-100 fw-bold">Войдите для оформления заявки</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.bg-gradient {
+    background: linear-gradient(135deg, #f5f7fa, #e0eafc);
+}
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.35s ease;
+}
+.card-shadow-sm {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+.placeholder-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+}
+</style>
+{% endblock %}

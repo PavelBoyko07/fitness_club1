@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Заявка №{{ application.id }}{% endblock %}
+{% block content %}
+<section class="py-5"><div class="container"><div class="card border-0 shadow rounded-4 p-4"><h1 class="fw-bold mb-4">Заявка №{{ application.id }}</h1><div class="row g-3 mb-4"><div class="col-md-4"><div class="bg-light rounded-4 p-3"><strong>Клиент</strong><p class="mb-0">{{ application.client_name }}</p></div></div><div class="col-md-4"><div class="bg-light rounded-4 p-3"><strong>Телефон</strong><p class="mb-0">{{ application.phone_number }}</p></div></div><div class="col-md-4"><div class="bg-light rounded-4 p-3"><strong>Статус</strong><p class="mb-0">{{ application.get_status_display }}</p></div></div></div><h3 class="fw-bold">Абонементы</h3><ul class="list-group mb-4">{% for item in memberships %}<li class="list-group-item d-flex justify-content-between"><span>{{ item.membership.name }}</span><span>{{ item.visits_per_week }} посещ. в неделю</span></li>{% empty %}<li class="list-group-item text-muted">Абонементы не указаны.</li>{% endfor %}</ul><h4>Итого: {{ application.total_price }} ₽</h4></div></div></section>
+{% endblock %}

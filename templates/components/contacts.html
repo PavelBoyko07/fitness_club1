@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-dark text-light">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Контакты</h1>
+        <p class="lead">Свяжитесь с нами удобным способом</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow rounded-4 p-4 h-100">
+                    <h2 class="fw-bold mb-4">Fitness Club</h2>
+                    <p><strong>Телефон:</strong> +7 (900) 777-77-77</p>
+                    <p><strong>Email:</strong> paha@gmail.com</p>
+                    <p><strong>Адрес:</strong> Белореченск, Чапаева 48</p>
+                    <p><strong>График:</strong> Пн–Вс, 07:00–23:00</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card border-0 shadow rounded-4 p-4 h-100">
+                    <h2 class="fw-bold mb-4">Как добраться</h2>
+                    <div class="rounded-4 overflow-hidden" style="height:300px;">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2173.123456789!2d24.123456!3d56.123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eecf123456789%3A0xabcdef123456789!2sRiga!5e0!3m2!1sru!2slv!4v1680000000000!5m2!1sru!2slv"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

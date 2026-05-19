@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Расписание{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-dark text-light">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Расписание занятий</h1>
+        <p class="lead">Групповые тренировки по дням недели</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            {% for item in schedule_items %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 rounded-4 shadow-sm schedule-card p-4 d-flex flex-column"
+                     style="background: linear-gradient(135deg, #f8f9fa, #e0eafc);">
+
+                    <span class="badge bg-dark rounded-pill mb-3 align-self-start">{{ item.get_day_of_week_display }}</span>
+
+                    <h3 class="fw-bold mb-3">{{ item.name }}</h3>
+
+                    <p class="text-muted mb-2"><i class="bi bi-clock"></i> {{ item.start_time }} — {{ item.end_time }}</p>
+
+                    <p class="mb-1"><i class="bi bi-person-circle"></i> <strong>Тренер:</strong> {{ item.trainer|default:'—' }}</p>
+                    <p class="mb-1"><i class="bi bi-bar-chart-line-fill"></i> <strong>Направление:</strong> {{ item.direction|default:'—' }}</p>
+
+                    <p class="mb-0"><i class="bi bi-building"></i> <strong>Зал:</strong> {{ item.hall }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center text-muted w-100">Расписание пока не добавлено.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.schedule-card {
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+}
+.schedule-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 1.5rem 2rem rgba(0,0,0,0.15);
+}
+.schedule-card h3 {
+    font-size: 1.25rem;
+}
+.schedule-card p {
+    font-size: 0.95rem;
+}
+</style>
+{% endblock %}

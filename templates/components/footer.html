@@ -1,0 +1,27 @@
+<footer class="bg-dark text-light pt-5 pb-4 mt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <h4 class="fw-bold">Fitness Club</h4>
+                <p class="text-light opacity-75">Современный фитнес-клуб с групповыми программами, тренажёрным залом и персональными тренировками.</p>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="fw-bold">Разделы</h5>
+                <ul class="list-unstyled">
+                    <li><a class="footer-link" href="{% url 'membership_list' %}">Абонементы</a></li>
+                    <li><a class="footer-link" href="{% url 'trainer_list' %}">Тренеры</a></li>
+                    <li><a class="footer-link" href="{% url 'schedule_type_list' %}">Расписание</a></li>
+                    <li><a class="footer-link" href="{% url 'contacts' %}">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="fw-bold">Контакты</h5>
+                <p class="mb-1">Телефон: +371 2000 0000</p>
+                <p class="mb-1">Email: info@fitnessclub.local</p>
+                <p class="mb-0">Адрес: Riga, Latvia</p>
+            </div>
+        </div>
+        <hr class="border-secondary my-4">
+        <p class="text-center mb-0 text-light opacity-75">© 2026 Fitness Club. Все права защищены.</p>
+    </div>
+</footer>
