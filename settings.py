@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'club',
-
 ]
 
 MIDDLEWARE = [
