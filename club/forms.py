@@ -102,8 +102,3 @@ class LoginForm(AuthenticationForm):
             'placeholder': 'Введите пароль'
         })
     )
-
-class SMSForm(forms.Form):
-    phone_number = forms.CharField(max_length=20, label="Телефон")
-    message = forms.CharField(widget=forms.Textarea, label="Сообщение")
-    email = forms.EmailField(label="Email")

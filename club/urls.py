@@ -1,7 +1,6 @@
 from django.urls import path
 
 from . import views
-from .views import send_sms_view
 
 urlpatterns = [
     path('', views.index, name='home'),
@@ -22,5 +21,4 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('register/', views.register, name='register'),
     path('login/', views.UserLoginView.as_view(), name='login'),
-    path('send-sms/', send_sms_view, name='send_sms'),
 ]
