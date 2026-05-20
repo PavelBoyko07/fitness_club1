@@ -214,3 +214,7 @@ class ScheduleType(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.get_day_of_week_display()} {self.start_time}'
+
+
+class Message:
+    pass

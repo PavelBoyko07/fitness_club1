@@ -1,6 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404, redirect, render
+from .models import Message
+from django.shortcuts import render
+from .forms import SMSForm
+from .tasks import send_sms_and_email_task
+
+
 
 from .forms import ApplicationForm, LoginForm, RegisterForm, ReviewForm
 from .models import (Application,ApplicationMembership,FitnessDirection,Membership,Review,ScheduleType,Stock,Trainer,TrainingType,Visit,)
@@ -150,3 +156,34 @@ def register(request):
 class UserLoginView(LoginView):
     authentication_form = LoginForm
     template_name = 'registration/login.html'
+
+def send_message_view(request):
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        text = request.POST.get('text')
+        email = request.POST.get('email')
+
+        Message.objects.create(phone_number=phone, text=text)
+
+        send_sms_and_email_task.delay(phone, text, email)
+
+        return render(request, 'success.html')
+
+    return render(request, 'send_message.html')
+
+def send_sms_view(request):
+    status = None
+    if request.method == 'POST':
+        form = SMSForm(request.POST)
+        if form.is_valid():
+            phone = form.cleaned_data['phone_number']
+            text = form.cleaned_data['message']
+            email = form.cleaned_data['email']
+
+            # Отправка через Celery
+            send_sms_and_email_task.delay(phone, text, email)
+            status = "SMS и Email отправлены!"
+    else:
+        form = SMSForm()
+
+    return render(request, 'send_sms.html', {'form': form, 'status': status})
