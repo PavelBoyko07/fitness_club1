@@ -3,9 +3,6 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.shortcuts import render
 
-
-
-
 from .forms import ApplicationForm, LoginForm, RegisterForm, ReviewForm
 from .models import (Application,ApplicationMembership,FitnessDirection,Membership,Review,ScheduleType,Stock,Trainer,TrainingType,Visit,)
 

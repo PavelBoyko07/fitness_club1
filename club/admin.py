@@ -1,20 +1,25 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django import forms
+from django.utils.safestring import mark_safe
 
 from .models import (
-    Application,
-    ApplicationMembership,
-    FitnessDirection,
-    Membership,
-    MembershipTrainer,
-    Review,
-    ScheduleType,
-    Stock,
-    Trainer,
-    TrainingType,
-    Visit,
+    Application, ApplicationMembership, FitnessDirection,
+    Membership, MembershipTrainer, Review, ScheduleType,
+    Stock, Trainer, TrainingType, Visit,
 )
 
+
+class AdminImagePreviewWidget(forms.ClearableFileInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        input_html = super().render(name, value, attrs, renderer)
+        if value and getattr(value, 'url', None):
+            return mark_safe(
+                f'<div style="border:1px dashed #ccc; padding:5px; display:inline-block;">'
+                f'<img src="{value.url}" style="max-width:200px; max-height:200px; display:block; margin-bottom:5px;" />'
+                f'{input_html}</div>'
+            )
+        return input_html
 
 @admin.register(FitnessDirection)
 class FitnessDirectionAdmin(admin.ModelAdmin):
@@ -27,41 +32,53 @@ class FitnessDirectionAdmin(admin.ModelAdmin):
 
     def icon_preview(self, obj):
         if obj.icon_image:
-            return format_html('<img src="{}" width="60" height="60" style="border-radius:12px; object-fit:cover;" />', obj.icon_image.url)
+            return format_html(
+                '<img src="{}" width="60" height="60" style="border-radius:12px; object-fit:cover;" />',
+                obj.icon_image.url
+            )
         return 'Нет изображения'
-
     icon_preview.short_description = 'Превью'
-
 
 @admin.register(TrainingType)
 class TrainingTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     search_fields = ('name', 'description')
 
-
 class MembershipTrainerInline(admin.TabularInline):
     model = MembershipTrainer
     extra = 1
 
+class MembershipAdminForm(forms.ModelForm):
+    class Meta:
+        model = Membership
+        fields = '__all__'
+        widgets = {
+            'image': AdminImagePreviewWidget,  # кастомное превью
+        }
+
 
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
-    list_display = ('id', 'image_preview', 'name', 'direction', 'training_type', 'price', 'duration_days', 'visits_count', 'is_active')
+    form = MembershipAdminForm
+    list_display = (
+        'name', 'slug', 'image_tag', 'direction',
+        'training_type', 'price', 'duration_days', 'visits_count', 'is_active'
+    )
     list_display_links = ('name',)
     list_editable = ('price', 'is_active')
     list_filter = ('direction', 'training_type', 'is_active')
     search_fields = ('name', 'description', 'direction__name')
     prepopulated_fields = {'slug': ('name',)}
-    readonly_fields = ('created_at', 'image_preview')
+    readonly_fields = ('created_at', 'image_tag')
     inlines = [MembershipTrainerInline]
 
-    def image_preview(self, obj):
+    def image_tag(self, obj):
         if obj.image:
-            return format_html('<img src="{}" width="80" height="80" style="border-radius:12px; object-fit:cover;" />', obj.image.url)
-        return 'Нет изображения'
-
-    image_preview.short_description = 'Превью'
-
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="200" height="200" style="object-fit: cover; border-radius: 12px;" />'
+            )
+        return "-"
+    image_tag.short_description = 'Изображение'
 
 @admin.register(Trainer)
 class TrainerAdmin(admin.ModelAdmin):
@@ -74,18 +91,18 @@ class TrainerAdmin(admin.ModelAdmin):
 
     def photo_preview(self, obj):
         if obj.photo:
-            return format_html('<img src="{}" width="90" height="90" style="border-radius:50%; object-fit:cover;" />', obj.photo.url)
+            return format_html(
+                '<img src="{}" width="90" height="90" style="border-radius:50%; object-fit:cover;" />',
+                obj.photo.url
+            )
         return 'Нет фото'
-
     photo_preview.short_description = 'Фото'
-
 
 @admin.register(MembershipTrainer)
 class MembershipTrainerAdmin(admin.ModelAdmin):
     list_display = ('id', 'trainer', 'membership')
     list_filter = ('trainer', 'membership')
     search_fields = ('trainer__full_name', 'membership__name')
-
 
 class ApplicationMembershipInline(admin.TabularInline):
     model = ApplicationMembership
@@ -109,14 +126,12 @@ class ApplicationMembershipAdmin(admin.ModelAdmin):
     list_filter = ('membership',)
     search_fields = ('application__client_name', 'membership__name')
 
-
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'discount_percent', 'start_date', 'end_date', 'is_active')
     list_editable = ('is_active',)
     list_filter = ('is_active', 'start_date', 'end_date')
     search_fields = ('title', 'description')
-
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
@@ -125,14 +140,12 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('is_published', 'rating')
     search_fields = ('author_name', 'text')
 
-
 @admin.register(Visit)
 class VisitAdmin(admin.ModelAdmin):
     list_display = ('id', 'client_name', 'phone_number', 'direction', 'trainer', 'visit_date', 'status')
     list_editable = ('status',)
     list_filter = ('status', 'direction', 'trainer')
     search_fields = ('client_name', 'phone_number')
-
 
 @admin.register(ScheduleType)
 class ScheduleTypeAdmin(admin.ModelAdmin):

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
@@ -21,4 +21,5 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('register/', views.register, name='register'),
     path('login/', views.UserLoginView.as_view(), name='login'),
+    re_path(r'^memberships/(?P<slug>[^/]+)/$', views.membership_detail, name='membership_detail'),
 ]

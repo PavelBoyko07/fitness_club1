@@ -4,12 +4,15 @@
 }
 
 body {
-    background: #ffffff;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
     color: #171717;
+    min-height: 100vh;
+    background-attachment: fixed;
 }
 
 .hero-section {
-    background: radial-gradient(circle at 20% 20%, rgba(255, 193, 7, .22), transparent 30%), linear-gradient(135deg, #111111 0%, #252525 100%);
+    background: radial-gradient(circle at 20% 20%, rgba(255, 193, 7, .22), transparent 30%),
+                linear-gradient(135deg, #111111 0%, #252525 100%);
 }
 
 .navbar-brand {
@@ -66,3 +69,4 @@ a {
 a:hover {
     color: #b88700;
 }
+
