@@ -3,11 +3,11 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-<section class="py-5 auth-section">
+<section class="py-5 auth-section" style="background-color:#f8f9fa;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5 col-lg-4">
-                <div class="auth-card">
+                <div class="auth-card border rounded shadow p-4 bg-white">
                     <div class="auth-card-body">
                         <h2 class="text-center fw-bold mb-4">Вход</h2>
 
@@ -15,9 +15,9 @@
                             {% csrf_token %}
 
                             {% if form.errors %}
-                            <div class="alert alert-danger rounded-4">
-                                Проверьте логин и пароль.
-                            </div>
+                                <div class="alert alert-danger rounded-4">
+                                    Проверьте логин и пароль.
+                                </div>
                             {% endif %}
 
                             <div class="mb-3">
@@ -28,7 +28,7 @@
                                 {{ form.password }}
                             </div>
 
-                            <button type="submit" class="auth-btn-dark w-100">
+                            <button type="submit" class="btn btn-dark w-100">
                                 Войти
                             </button>
                         </form>
